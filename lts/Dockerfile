@@ -2,6 +2,8 @@ FROM jenkins/jenkins:lts
 
 MAINTAINER Jiří Šimeček <jirka@simecek.org>
 
+ARG GID=999
+
 USER root
 
 RUN apt-get update && apt-get install -y \
@@ -13,6 +15,10 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubunt
 
 RUN apt-get update && apt-get install -y \
     docker-ce
+
+RUN groupdel docker
+
+RUN groupadd --gid=${GID} docker
 
 RUN usermod -aG docker,staff jenkins
 
